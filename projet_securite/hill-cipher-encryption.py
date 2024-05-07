@@ -95,36 +95,35 @@ def hill_cipher_attack(known_plain_text, known_cipher):
 if __name__ == "__main__":
     print(
         "\033[1m"
-        + "-----------------------------------------------------HILL CIPHER ENCRYPTION------------------------------------------------------"
+        + "---------------------------------------------HILL CIPHER ENCRYPTION-----------------------------------------------"
         + "\033[0m"
     )
-    for attempt in range(3):
-        key_table = input("Enter your key matrix as a,b,c,d : ").split(",")
-        dim = int(len(key_table) ** 0.5)
 
-        if dim * dim != len(key_table):
-            print("Key matrix should be squared")
-            continue
+    key_table = input("Enter your key matrix as a,b,c,d : ").split(",")
+    dim = int(len(key_table) ** 0.5)
 
-        key_matrix = np.array(key_table, dtype=int).reshape(dim, dim)
-        det = int(np.round(np.linalg.det(key_matrix)))
-        if np.gcd(det, 256) != 1:
-            print("determinant gcd with 256 should be 1")
+    if dim * dim != len(key_table):
+        print("Key matrix should be squared")
 
-        else:
-            i = ""
-            while i != "exit":
-                plain = input("enter your plain text  : \n")
-                cipher = encrypt(plain, key_matrix)
-                print(f"this is the encrypted text : {cipher}")
-                print(f"this is you decrypted text : {decrypt(cipher , key_matrix)}")
-                attack = input(
-                    "\ndo you want to attack the algorithm with this plain-cipher pair y/n : "
-                )
-                if attack == "y":
-                    hill_cipher_attack(plain, cipher)
-                i = input(
-                    "\n\n\n-------------------------------------------------\ntype enter for another try  / exit to finish "
-                )
+    key_matrix = np.array(key_table, dtype=int).reshape(dim, dim)
+    det = int(np.round(np.linalg.det(key_matrix)))
+    if np.gcd(det, 256) != 1:
+        print("determinant gcd with 256 should be 1")
 
-        break
+    else:
+        i = ""
+        while True:
+            plain = input("enter your plain text  : \n")
+            cipher = encrypt(plain, key_matrix)
+            print(f"this is the encrypted text : {cipher}")
+            print(f"this is you decrypted text : {decrypt(cipher , key_matrix)}")
+            attack = input(
+                "\ndo you want to attack the algorithm with this plain-cipher pair y/n : "
+            )
+            if attack == "y":
+                hill_cipher_attack(plain, cipher)
+            i = input(
+                "\n\n\n-------------------------------------------------\ntype enter for another try  / exit to finish "
+            )
+            if i == "exit":
+                break
